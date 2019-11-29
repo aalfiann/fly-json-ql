@@ -9,4 +9,56 @@
 ![License](https://img.shields.io/npm/l/fly-json-ql)
 ![NPM download/month](https://img.shields.io/npm/dm/fly-json-ql.svg)
 ![NPM download total](https://img.shields.io/npm/dt/fly-json-ql.svg)  
-Query Json on the fly with JsonQL for NodeJS.
+Query Json on the fly with JsonQL for NodeJS.  
+
+JsonQL will make your query more cleaner. Because sometimes query using function is harder to read.
+
+### Install using NPM
+```bash
+$ npm install fly-json-ql
+```
+
+### Usage
+```javascript
+const FlyJsonQL = require('fly-json-ql');
+const jsonql = new FlyJsonQL();
+
+// example data
+var data1 = [
+    {user_id:1,name:'budi',age:10},
+    {user_id:5,name:'wawan',age:20},
+    {user_id:3,name:'tono',age:30}
+];
+
+// simple select query
+var q = [
+    {
+        select:{
+            fields:['user_id','name','age'],
+            from:data1,
+            where: [
+                ['name','==','wawan']
+            ]
+        }
+    }
+];
+
+// with callback
+jsonql.query(q).exec(function(err, data) {
+    console.log(data);
+});
+
+// or with promise
+jsonql.query(q).promise().then(data => {
+    console.log(data);
+});
+```
+
+### Documentation
+Documentation is available in our [Wiki](https://github.com/aalfiann/fly-json-ql/wiki).
+
+### Unit Test
+If you want to play around with unit test.
+```bash
+$ npm test
+```

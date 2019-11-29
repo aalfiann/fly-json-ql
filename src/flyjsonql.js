@@ -1,6 +1,16 @@
+/*!
+ * FlyJsonQL ES6 v1.0.0 [NodeJS]
+ * https://github.com/aalfiann/fly-json-ql
+ *
+ * Copyright 2019 M ABD AZIZ ALFIAN
+ * Released under the MIT license
+ * https://github.com/aalfiann/fly-json-ql/blob/master/LICENSE
+ */
+"use strict";
+
 const FlyJsonOdm = require('fly-json-odm');
 
-class JsonQL {
+class FlyJsonQL {
 
     constructor() {
         // Promise Stackholder
@@ -29,14 +39,33 @@ class JsonQL {
         this.promiseStack = [];
     }
 
+    /**
+     * Query between function 
+     * @param {_odm} parent 
+     * @param {string} name 
+     * @param {string|integer} valueA 
+     * @param {string|integer} valueB 
+     */
     _funcBetween(parent,name,valueA,valueB) {
         parent.where(name,'>=',valueA).where(name,'<=',valueB);
     }
 
+    /**
+     * Query search function
+     * @param {_odm} parent 
+     * @param {string} name 
+     * @param {string|integer} value 
+     */
     _funcSearch(parent,name,value) {
         parent.where(name,'like',value,false);
     }
 
+    /**
+     * Query RegExp function
+     * @param {_odm} parent 
+     * @param {string} name 
+     * @param {string|integer} value 
+     */
     _funcRegExp(parent,name,value) {
         parent.where(name,'regex',value);
     }
@@ -46,7 +75,7 @@ class JsonQL {
      * @param {_odm} parent 
      * @param {array} where
      */
-    _builderWhere(parent,where,or=false) {
+    _builderWhere(parent,where) {
         if(!this._odm.isEmpty(where) && this._odm.isArray(where) && !this._odm.isEmptyArray(where)) {
             for(var i=0;i<where.length;i++) {
                 parent.where(...where[i]);
@@ -148,7 +177,7 @@ class JsonQL {
                 for(var x=1;x<nested.length;x++) {
                     if(up) {
                         up[nested[x]] = item[nested[x]];
-                        up = up[nested[x]];    
+                        up = up[nested[x]];
                     } else {
                         item[nested[0]][nested[x]] = item[nested[x]];
                         up = item[nested[0]][nested[x]];
@@ -348,10 +377,10 @@ class JsonQL {
                     this._mergeScope('join',table,obj.merge);
                     // join
                     this._joinScope('join',table,obj.join);
-                    var result = table.exec();
+                    var result = this._odm.deepClone(table.exec());
                     // join nested
                     if(obj.join && obj.nested) {
-                        result = this._builderNested(result,obj.nested);
+                        result = this._odm.deepClone(this._builderNested(result,obj.nested));
                     }
                     resolve(result);
                 }).catch(error => {
@@ -364,9 +393,123 @@ class JsonQL {
     }
 
     /**
+     * Query Builder for Insert 
+     * @param {object} obj 
+     * @return {Promise}
+     */
+    _insert(obj) {
+        this.promiseStack.push(new Promise((resolve,reject) => {
+            this._odm.promisify(builder => {return builder}).then(table => {
+                resolve({
+                    data:table.set(obj.into).insertMany(obj.values).exec(),
+                    count:obj.values.length
+                });
+            }).catch(error => {
+                reject(error);
+            });
+        }));
+    }
+
+    /**
+     * Query Builder for Update 
+     * @param {object} obj 
+     * @return {Promise}
+     */
+    _update(obj) {
+        this.promiseStack.push(new Promise((resolve,reject) => {
+            this._odm.promisify(builder => {return builder}).then(table => {
+                table.set(obj.from);
+                this._builderBetween(table,obj.between);
+                this._builderWhere(table,obj.where);
+                this._builderSearch(table,obj.search);
+                this._builderRegExp(table,obj.regexp);
+                this._builderOr(table,obj.or);
+                var oldest = this._odm.deepClone(table.exec());
+                var index = Object.keys(obj.set);
+                var len = oldest.length;
+                var indexlen = index.length;
+                for(var i =0;i<len;i++) {
+                    for(var x=0;x<indexlen;x++) {
+                        oldest[i][index[x]] = obj.set[index[x]];
+                    }
+                }
+                resolve({
+                    data:table.set(obj.from).updateMany(obj.key,oldest).exec(),
+                    count:len
+                });
+            }).catch(error => {
+                reject(error);
+            });
+        }));
+    }
+
+    /**
+     * Query Builder for Modify 
+     * @param {object} obj 
+     * @return {Promise}
+     */
+    _modify(obj) {
+        this.promiseStack.push(new Promise((resolve,reject) => {
+            this._odm.promisify(builder => {return builder}).then(table => {
+                table.set(obj.from);
+                this._builderBetween(table,obj.between);
+                this._builderWhere(table,obj.where);
+                this._builderSearch(table,obj.search);
+                this._builderRegExp(table,obj.regexp);
+                this._builderOr(table,obj.or);
+                var oldest = this._odm.deepClone(table.exec());
+                var index = Object.keys(obj.set);
+                var len = oldest.length;
+                var indexlen = index.length;
+                for(var i =0;i<len;i++) {
+                    for(var x=0;x<indexlen;x++) {
+                        oldest[i][index[x]] = obj.set[index[x]];
+                    }
+                }
+                resolve({
+                    data:table.set(obj.from).modifyMany(obj.key,oldest).exec(),
+                    count: len
+                });
+            }).catch(error => {
+                reject(error);
+            });
+        }));
+    }
+
+    /**
+     * Query Builder for Delete 
+     * @param {object} obj 
+     * @return {Promise}
+     */
+    _delete(obj) {
+        this.promiseStack.push(new Promise((resolve,reject) => {
+            this._odm.promisify(builder => {return builder}).then(table => {
+                table.set(obj.from);
+                this._builderBetween(table,obj.between);
+                this._builderWhere(table,obj.where);
+                this._builderSearch(table,obj.search);
+                this._builderRegExp(table,obj.regexp);
+                this._builderOr(table,obj.or);
+                var oldest = this._odm.deepClone(table.select([obj.key]).exec());
+                var data2delete = [];
+                var len = oldest.length;
+                for(var i=0;i<len;i++) {
+                    data2delete.push(oldest[i][obj.key]);
+                }
+                resolve({
+                    data:table.set(obj.from).deleteMany(obj.key,data2delete).exec(),
+                    count:len
+                });
+            }).catch(error => {
+                reject(error);
+            });
+        }));
+    }
+
+    /**
      * Set Query
      * @param {array} query 
-     * @return {JsonQL}
+     * @return {FlyJsonQL}
      */
     query(query) {
         this.clean();
@@ -375,18 +518,18 @@ class JsonQL {
                 for (var k in query[key]) {
                     if (query[key].hasOwnProperty(k)) {
                         switch(true) {
-                            // case (k == 'insert'):
-                            //     // this._insert(query[key].insert);
-                            //     break;
-                            // case (k == 'update'):
-                            //     // this._update(query[key].update);
-                            //     break;
-                            // case (k == 'modify'):
-                            //     // this._modify(query[key].modify);
-                            //     break;
-                            // case (k == 'delete'):
-                            //     // this._delete(query[key].delete);
-                            //     break;
+                            case (k == 'insert'):
+                                this._insert(query[key].insert);
+                                break;
+                            case (k == 'update'):
+                                this._update(query[key].update);
+                                break;
+                            case (k == 'modify'):
+                                this._modify(query[key].modify);
+                                break;
+                            case (k == 'delete'):
+                                this._delete(query[key].delete);
+                                break;
                             default:
                                 this._select(query[key].select);
                         }
@@ -421,6 +564,18 @@ class JsonQL {
         };
     }
 
+    /**
+     * Execute Query Builder on top Promise
+     */
+    promise() {
+        return new Promise((resolve,reject) => {
+            this.exec(function(err,data) {
+                if(err) return reject(err);
+                resolve(data);
+            });
+        });
+    }
+
 }
 
-module.exports = JsonQL;
+module.exports = FlyJsonQL;

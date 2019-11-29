@@ -1,7 +1,7 @@
 {
   "name": "fly-json-ql",
   "version": "1.0.0",
-  "description": "Query JSON on the fly with JsonQL for NodeJS",
+  "description": "Query JSON on the fly with JsonQL for NodeJS.",
   "main": "src/flyjsonql.js",
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha",

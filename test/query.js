@@ -1,5 +1,5 @@
 const assert = require('assert');
-const JsonQL = require('../src/flyjsonql');
+const FlyJsonQL = require('../src/flyjsonql');
 
 describe('query test', function() {
 
@@ -42,28 +42,43 @@ describe('query test', function() {
     ];
 
     it('get odm', function() {
-        const jsonql = new JsonQL();
+        const jsonql = new FlyJsonQL();
         var result = jsonql.odm;
-        // console.log(result);
+        assert.deepEqual(result.data1,[]);
+        assert.deepEqual(result.data2,[]);
+        assert.deepEqual(result.query,[]);
+        assert.deepEqual(result.result,[]);
     });
 
     it('query must an array object', function() {
-        const jsonql = new JsonQL();
+        const jsonql = new FlyJsonQL();
         var result = jsonql.query('abc');
-        // console.log(result);
+        assert.deepEqual(result.promiseStack,[]);
+        assert.deepEqual(result.content,[]);
+        assert.deepEqual(result.joined,[]);
+        assert.deepEqual(result._odm.data1,[]);
+        assert.deepEqual(result._odm.data2,[]);
+        assert.deepEqual(result._odm.query,[]);
+        assert.deepEqual(result._odm.result,[]);
     });
 
     it('query must hasOwnProperty', function() {
-        const jsonql = new JsonQL();
+        const jsonql = new FlyJsonQL();
         const q = [
             Object.create({select: 'inherited'})
         ];
         var result = jsonql.query(q);
-        // console.log(result);
+        assert.deepEqual(result.promiseStack,[]);
+        assert.deepEqual(result.content,[]);
+        assert.deepEqual(result.joined,[]);
+        assert.deepEqual(result._odm.data1,[]);
+        assert.deepEqual(result._odm.data2,[]);
+        assert.deepEqual(result._odm.query,[]);
+        assert.deepEqual(result._odm.result,[]);
     });
 
-    it('select + where', function() {
-        const jsonql = new JsonQL();
+    it('query where', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -77,12 +92,35 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
-        })
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response[0].user_id,5);
+            done();
+        });
+    });
+
+    it('query where on top promise', function(done) {
+        const jsonql = new FlyJsonQL();
+
+        var q = [
+            {
+                select:{
+                    from:data1,
+                    where: [
+                        ['name','==','wawan']
+                    ]
+                }
+            }
+        ];
+
+        jsonql.query(q).promise().then(data => {
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response[0].user_id,5);
+            done();
+        });
     });
     
-    it('select + where + and', function() {
-        const jsonql = new JsonQL();
+    it('query where + and', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -97,12 +135,17 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
-        })
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,3);
+            assert.equal(data[0].response[0].address,'bandung');
+            assert.equal(data[0].response[1].address,'solo, balapan');
+            assert.equal(data[0].response[2].address,'surabaya');
+            done();
+        });
     });
 
-    it('select + between', function() {
-        const jsonql = new JsonQL();
+    it('query between', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -116,12 +159,16 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,2);
+            assert.equal(data[0].response[0].user_id,5);
+            assert.equal(data[0].response[1].user_id,3);
+            done();
         })
     });
 
-    it('select + search', function() {
-        const jsonql = new JsonQL();
+    it('query search', function() {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -135,12 +182,15 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,2);
+            assert.equal(data[0].response[0].id,3);
+            assert.equal(data[0].response[1].id,4);
         })
     });
 
-    it('select + regexp', function() {
-        const jsonql = new JsonQL();
+    it('query regexp', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -154,12 +204,15 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
-        })
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,1);
+            assert.equal(data[0].response[0].id,4);
+            done();
+        });
     });
 
-    it('select + join', function() {
-        const jsonql = new JsonQL();
+    it('query join', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -177,12 +230,17 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
-        })
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,3);
+            assert.equal(data[0].response[0].data2.id,1);
+            assert.equal(data[0].response[1].data2.id,5);
+            assert.equal(data[0].response[2].data2.id,3);
+            done();
+        });
     });
 
-    it('select + join nested', function() {
-        const jsonql = new JsonQL();
+    it('query join nested', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -215,12 +273,68 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
-        })
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,3);
+            assert.equal(data[0].response[0].data2.id,1);
+            assert.equal(data[0].response[0].data2.data3.id,1);
+            assert.equal(data[0].response[0].data2.data3.data4.id,1);
+            assert.equal(data[0].response[1].data2.id,5);
+            assert.equal(data[0].response[1].data2.data3.id,5);
+            assert.equal(data[0].response[1].data2.data3.data4.id,5);
+            assert.equal(data[0].response[2].data2.id,3);
+            assert.equal(data[0].response[2].data2.data3.id,3);
+            assert.equal(data[0].response[2].data2.data3.data4.id,3);
+            done();
+        });
     });
 
-    it('select + where + or', function() {
-        const jsonql = new JsonQL();
+    it('query join nested in another version', function(done) {
+        const jsonql = new FlyJsonQL();
+
+        var q = [
+            {
+                select:{
+                    from:data1,
+                    join: [
+                        {
+                            name:'data2',
+                            from: data2,
+                            on: ['user_id','id']
+                        },
+                        {
+                            name:'data3',
+                            from: data3,
+                            on: ['user_id','id']
+                        },
+                        {
+                            name:'data4',
+                            from: data4,
+                            on: ['user_id','id']
+                        }
+                    ],
+                    nested:['data2','data3','data4']
+                }
+            }
+        ];
+
+        jsonql.query(q).exec(function(err, data) {
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,3);
+            assert.equal(data[0].response[0].data2.id,1);
+            assert.equal(data[0].response[0].data2.data3.id,1);
+            assert.equal(data[0].response[0].data2.data3.data4.id,1);
+            assert.equal(data[0].response[1].data2.id,5);
+            assert.equal(data[0].response[1].data2.data3.id,5);
+            assert.equal(data[0].response[1].data2.data3.data4.id,5);
+            assert.equal(data[0].response[2].data2.id,3);
+            assert.equal(data[0].response[2].data2.data3.id,3);
+            assert.equal(data[0].response[2].data2.data3.data4.id,3);
+            done();
+        });
+    });
+
+    it('query where + or', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -243,12 +357,15 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,2);
+            assert.equal(data[0].response[0].user_id,5);
+            done();
         })
     });
 
-    it('select + where + or', function() {
-        const jsonql = new JsonQL();
+    it('query select + where + or', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -272,12 +389,16 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
-        })
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,2);
+            assert.equal(data[0].response[0].name,'wawan');
+            assert.equal(data[0].response[1].name,'budi');
+            done();
+        });
     });
 
-    it('select + where + or + orderby', function() {
-        const jsonql = new JsonQL();
+    it('query select + where + or + orderby', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -302,12 +423,16 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,2);
+            assert.equal(data[0].response[0].name,'budi');
+            assert.equal(data[0].response[1].name,'wawan');
+            done();
         });
     });
 
-    it('select + where + or + orderby + skip', function() {
-        const jsonql = new JsonQL();
+    it('query select + where + or + orderby + skip', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -333,12 +458,15 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,1);
+            assert.equal(data[0].response[0].name,'wawan');
+            done();
         });
     });
 
-    it('select + where + orderby + skip + take', function() {
-        const jsonql = new JsonQL();
+    it('query select + where + orderby + skip + take', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -353,12 +481,16 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,2);
+            assert.equal(data[0].response[0].name,'tono');
+            assert.equal(data[0].response[1].name,'wawan');
+            done();
         });
     });
 
-    it('select + orderby + paginate', function() {
-        const jsonql = new JsonQL();
+    it('query select + orderby + paginate', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -372,12 +504,16 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,2);
+            assert.equal(data[0].response[0].name,'budi');
+            assert.equal(data[0].response[1].name,'tono');
+            done();
         });
     });
 
-    it('select + groupby + orderby', function() {
-        const jsonql = new JsonQL();
+    it('query groupby + orderby', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -390,12 +526,18 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,4);
+            assert.equal(data[0].response[0].brand,'Audi');
+            assert.equal(data[0].response[1].brand,'Ferarri');
+            assert.equal(data[0].response[2].brand,'Ford');
+            assert.equal(data[0].response[3].brand,'Peugot');
+            done();
         });
     });
 
-    it('select + groupby + sum[stock] + orderby', function() {
-        const jsonql = new JsonQL();
+    it('query groupby + sum[stock] + orderby', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -408,12 +550,22 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,4);
+            assert.equal(data[0].response[0].brand,'Audi');
+            assert.equal(data[0].response[0].average_stock,54);
+            assert.equal(data[0].response[1].brand,'Ferarri');
+            assert.equal(data[0].response[1].average_stock,8);
+            assert.equal(data[0].response[2].brand,'Ford');
+            assert.equal(data[0].response[2].average_stock,49);
+            assert.equal(data[0].response[3].brand,'Peugot');
+            assert.equal(data[0].response[3].average_stock,23);
+            done();
         });
     });
 
-    it('select + groupdetail', function() {
-        const jsonql = new JsonQL();
+    it('query groupdetail', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -425,12 +577,18 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,1);
+            assert.equal(data[0].response[0].brand.Audi.length,2);
+            assert.equal(data[0].response[0].brand.Ferarri.length,1);
+            assert.equal(data[0].response[0].brand.Ford.length,1);
+            assert.equal(data[0].response[0].brand.Peugot.length,1);
+            done();
         });
     });
 
-    it('select + merge', function() {
-        const jsonql = new JsonQL();
+    it('query merge', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -448,12 +606,20 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
-        })
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,3);
+            assert.equal(data[0].response[0].user_id,1);
+            assert.equal(data[0].response[0].id,1);
+            assert.equal(data[0].response[1].user_id,5);
+            assert.equal(data[0].response[1].id,5);
+            assert.equal(data[0].response[2].user_id,3);
+            assert.equal(data[0].response[2].id,3);
+            done();
+        });
     });
 
-    it('select + merge nested', function() {
-        const jsonql = new JsonQL();
+    it('query merge nested', function(done) {
+        const jsonql = new FlyJsonQL();
 
         var q = [
             {
@@ -485,8 +651,28 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            // console.log(JSON.stringify(data));
-        })
+            assert.equal(data[0].status,true);
+            assert.equal(data[0].response.length,3);
+            assert.equal(data[0].response[0].user_id,1);
+            assert.equal(data[0].response[0].id,1);
+            assert.equal(data[0].response[0].name,'budi');
+            assert.equal(data[0].response[0].address,'bandung');
+            assert.equal(data[0].response[0].bio,'I was born in bandung');
+            assert.equal(data[0].response[0].about,'I come from bandung');
+            assert.equal(data[0].response[1].user_id,5);
+            assert.equal(data[0].response[1].id,5);
+            assert.equal(data[0].response[1].name,'wawan');
+            assert.equal(data[0].response[1].address,'surabaya');
+            assert.equal(data[0].response[1].bio,'I was born in surabaya');
+            assert.equal(data[0].response[1].about,'I come from surabaya');
+            assert.equal(data[0].response[2].user_id,3);
+            assert.equal(data[0].response[2].id,3);
+            assert.equal(data[0].response[2].name,'tono');
+            assert.equal(data[0].response[2].address,'solo');
+            assert.equal(data[0].response[2].bio,'I was born in solo');
+            assert.equal(data[0].response[2].about,'I come from solo');
+            done();
+        });
     });
 
 });

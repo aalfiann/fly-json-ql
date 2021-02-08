@@ -1,8 +1,8 @@
 /*!
- * FlyJsonQL ES6 v1.0.0 [NodeJS]
+ * FlyJsonQL ES6 v1.1.0 [NodeJS & Browser]
  * https://github.com/aalfiann/fly-json-ql
  *
- * Copyright 2019 M ABD AZIZ ALFIAN
+ * Copyright 2021 M ABD AZIZ ALFIAN
  * Released under the MIT license
  * https://github.com/aalfiann/fly-json-ql/blob/master/LICENSE
  */
@@ -260,6 +260,17 @@ class FlyJsonQL {
     }
 
     /**
+     * builder.distinct
+     * @param {_odm} parent 
+     * @param {string} distinct
+     */
+    _setDistinct(parent,distinct) {
+        if(this._odm.isEmpty(distinct) || this._odm.isString(distinct)) {
+            parent.distinct(distinct);
+        }
+    }
+
+    /**
      * builder.paginate
      * @param {_odm} parent 
      * @param {array} paginate
@@ -358,6 +369,7 @@ class FlyJsonQL {
         this._setOrderBy(parent,obj.orderby);
         this._setSkip(parent,obj.skip);
         this._setTake(parent,obj.take);
+        this._setDistinct(parent,obj.distinct);
         this._setPaginate(parent,obj.paginate);
         this._setFields(parent,obj.fields);
     }

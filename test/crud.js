@@ -25,7 +25,7 @@ describe('CRUD test', function() {
         ];
 
         jsonql.query(q).exec(function(error,data) {
-            assert.equal(data[0].response.count,3);
+            assert.strictEqual(data[0].response.count,3);
             done();
         });
     });
@@ -50,7 +50,7 @@ describe('CRUD test', function() {
         ];
 
         jsonql.query(q).exec(function(error,data) {
-            assert.equal(data[0].response.count,1);
+            assert.strictEqual(data[0].response.count,1);
             done();
         });
     });
@@ -74,7 +74,7 @@ describe('CRUD test', function() {
         ];
 
         jsonql.query(q).exec(function(error,data) {
-            assert.equal(data[0].response.count,1);
+            assert.strictEqual(data[0].response.count,1);
             done();
         });
     });
@@ -103,7 +103,7 @@ describe('CRUD test', function() {
         ];
 
         jsonql.query(q).exec(function(error,data) {
-            assert.equal(data[0].response.count,2);
+            assert.strictEqual(data[0].response.count,2);
             done();
         });
     });

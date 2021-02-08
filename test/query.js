@@ -41,25 +41,35 @@ describe('query test', function() {
         {brand:'Peugot',color:'white',stock:23}
     ];
 
+    var data6 = [
+        {id:1,name:'AAA',created:'2019-10-01 00:02:33'},
+        {id:1,name:'AAA',created:'2019-10-01 00:02:33'},
+        {id:1,name:'BBB',created:'2019-10-01 00:02:33'},
+        {id:4,name:'DDD',created:'2019-10-04 03:32:13'},
+        {id:4,name:'DDD',created:'2019-10-04 03:32:13'},
+        {id:7,name:'GGG',created:'2019-10-07 06:02:03'},
+        {id:7,name:'GGG',created:'2019-10-07 06:02:03'}
+    ];
+
     it('get odm', function() {
         const jsonql = new FlyJsonQL();
         var result = jsonql.odm;
-        assert.deepEqual(result.data1,[]);
-        assert.deepEqual(result.data2,[]);
-        assert.deepEqual(result.query,[]);
-        assert.deepEqual(result.result,[]);
+        assert.deepStrictEqual(result.data1,[]);
+        assert.deepStrictEqual(result.data2,[]);
+        assert.deepStrictEqual(result.query,[]);
+        assert.deepStrictEqual(result.result,[]);
     });
 
     it('query must an array object', function() {
         const jsonql = new FlyJsonQL();
         var result = jsonql.query('abc');
-        assert.deepEqual(result.promiseStack,[]);
-        assert.deepEqual(result.content,[]);
-        assert.deepEqual(result.joined,[]);
-        assert.deepEqual(result._odm.data1,[]);
-        assert.deepEqual(result._odm.data2,[]);
-        assert.deepEqual(result._odm.query,[]);
-        assert.deepEqual(result._odm.result,[]);
+        assert.deepStrictEqual(result.promiseStack,[]);
+        assert.deepStrictEqual(result.content,[]);
+        assert.deepStrictEqual(result.joined,[]);
+        assert.deepStrictEqual(result._odm.data1,[]);
+        assert.deepStrictEqual(result._odm.data2,[]);
+        assert.deepStrictEqual(result._odm.query,[]);
+        assert.deepStrictEqual(result._odm.result,[]);
     });
 
     it('query must hasOwnProperty', function() {
@@ -68,13 +78,13 @@ describe('query test', function() {
             Object.create({select: 'inherited'})
         ];
         var result = jsonql.query(q);
-        assert.deepEqual(result.promiseStack,[]);
-        assert.deepEqual(result.content,[]);
-        assert.deepEqual(result.joined,[]);
-        assert.deepEqual(result._odm.data1,[]);
-        assert.deepEqual(result._odm.data2,[]);
-        assert.deepEqual(result._odm.query,[]);
-        assert.deepEqual(result._odm.result,[]);
+        assert.deepStrictEqual(result.promiseStack,[]);
+        assert.deepStrictEqual(result.content,[]);
+        assert.deepStrictEqual(result.joined,[]);
+        assert.deepStrictEqual(result._odm.data1,[]);
+        assert.deepStrictEqual(result._odm.data2,[]);
+        assert.deepStrictEqual(result._odm.query,[]);
+        assert.deepStrictEqual(result._odm.result,[]);
     });
 
     it('query where', function(done) {
@@ -92,8 +102,8 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response[0].user_id,5);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response[0].user_id,5);
             done();
         });
     });
@@ -113,8 +123,8 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).promise().then(data => {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response[0].user_id,5);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response[0].user_id,5);
             done();
         });
     });
@@ -135,11 +145,11 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,3);
-            assert.equal(data[0].response[0].address,'bandung');
-            assert.equal(data[0].response[1].address,'solo, balapan');
-            assert.equal(data[0].response[2].address,'surabaya');
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,3);
+            assert.strictEqual(data[0].response[0].address,'bandung');
+            assert.strictEqual(data[0].response[1].address,'solo, balapan');
+            assert.strictEqual(data[0].response[2].address,'surabaya');
             done();
         });
     });
@@ -159,10 +169,10 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,2);
-            assert.equal(data[0].response[0].user_id,5);
-            assert.equal(data[0].response[1].user_id,3);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,2);
+            assert.strictEqual(data[0].response[0].user_id,5);
+            assert.strictEqual(data[0].response[1].user_id,3);
             done();
         })
     });
@@ -182,10 +192,10 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,2);
-            assert.equal(data[0].response[0].id,3);
-            assert.equal(data[0].response[1].id,4);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,2);
+            assert.strictEqual(data[0].response[0].id,3);
+            assert.strictEqual(data[0].response[1].id,4);
         })
     });
 
@@ -204,9 +214,9 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,1);
-            assert.equal(data[0].response[0].id,4);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,1);
+            assert.strictEqual(data[0].response[0].id,4);
             done();
         });
     });
@@ -230,11 +240,11 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,3);
-            assert.equal(data[0].response[0].data2.id,1);
-            assert.equal(data[0].response[1].data2.id,5);
-            assert.equal(data[0].response[2].data2.id,3);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,3);
+            assert.strictEqual(data[0].response[0].data2.id,1);
+            assert.strictEqual(data[0].response[1].data2.id,5);
+            assert.strictEqual(data[0].response[2].data2.id,3);
             done();
         });
     });
@@ -273,17 +283,17 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,3);
-            assert.equal(data[0].response[0].data2.id,1);
-            assert.equal(data[0].response[0].data2.data3.id,1);
-            assert.equal(data[0].response[0].data2.data3.data4.id,1);
-            assert.equal(data[0].response[1].data2.id,5);
-            assert.equal(data[0].response[1].data2.data3.id,5);
-            assert.equal(data[0].response[1].data2.data3.data4.id,5);
-            assert.equal(data[0].response[2].data2.id,3);
-            assert.equal(data[0].response[2].data2.data3.id,3);
-            assert.equal(data[0].response[2].data2.data3.data4.id,3);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,3);
+            assert.strictEqual(data[0].response[0].data2.id,1);
+            assert.strictEqual(data[0].response[0].data2.data3.id,1);
+            assert.strictEqual(data[0].response[0].data2.data3.data4.id,1);
+            assert.strictEqual(data[0].response[1].data2.id,5);
+            assert.strictEqual(data[0].response[1].data2.data3.id,5);
+            assert.strictEqual(data[0].response[1].data2.data3.data4.id,5);
+            assert.strictEqual(data[0].response[2].data2.id,3);
+            assert.strictEqual(data[0].response[2].data2.data3.id,3);
+            assert.strictEqual(data[0].response[2].data2.data3.data4.id,3);
             done();
         });
     });
@@ -318,17 +328,17 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,3);
-            assert.equal(data[0].response[0].data2.id,1);
-            assert.equal(data[0].response[0].data2.data3.id,1);
-            assert.equal(data[0].response[0].data2.data3.data4.id,1);
-            assert.equal(data[0].response[1].data2.id,5);
-            assert.equal(data[0].response[1].data2.data3.id,5);
-            assert.equal(data[0].response[1].data2.data3.data4.id,5);
-            assert.equal(data[0].response[2].data2.id,3);
-            assert.equal(data[0].response[2].data2.data3.id,3);
-            assert.equal(data[0].response[2].data2.data3.data4.id,3);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,3);
+            assert.strictEqual(data[0].response[0].data2.id,1);
+            assert.strictEqual(data[0].response[0].data2.data3.id,1);
+            assert.strictEqual(data[0].response[0].data2.data3.data4.id,1);
+            assert.strictEqual(data[0].response[1].data2.id,5);
+            assert.strictEqual(data[0].response[1].data2.data3.id,5);
+            assert.strictEqual(data[0].response[1].data2.data3.data4.id,5);
+            assert.strictEqual(data[0].response[2].data2.id,3);
+            assert.strictEqual(data[0].response[2].data2.data3.id,3);
+            assert.strictEqual(data[0].response[2].data2.data3.data4.id,3);
             done();
         });
     });
@@ -357,9 +367,9 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,2);
-            assert.equal(data[0].response[0].user_id,5);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,2);
+            assert.strictEqual(data[0].response[0].user_id,5);
             done();
         })
     });
@@ -389,10 +399,54 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,2);
-            assert.equal(data[0].response[0].name,'wawan');
-            assert.equal(data[0].response[1].name,'budi');
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,2);
+            assert.strictEqual(data[0].response[0].name,'wawan');
+            assert.strictEqual(data[0].response[1].name,'budi');
+            done();
+        });
+    });
+
+    it('query select + where + distinct', function(done) {
+        const jsonql = new FlyJsonQL();
+
+        var q = [
+            {
+                select:{
+                    fields:['id','name','created'],
+                    from:data6,
+                    distinct:'name'
+                }
+            }
+        ];
+
+        jsonql.query(q).exec(function(err, data) {
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,4);
+            assert.strictEqual(data[0].response[0].name,'AAA');
+            assert.strictEqual(data[0].response[1].name,'BBB');
+            done();
+        });
+    });
+
+    it('query select + where + distinct all', function(done) {
+        const jsonql = new FlyJsonQL();
+
+        var q = [
+            {
+                select:{
+                    fields:['id','name','created'],
+                    from:data6,
+                    distinct:''
+                }
+            }
+        ];
+
+        jsonql.query(q).exec(function(err, data) {
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,4);
+            assert.strictEqual(data[0].response[0].name,'AAA');
+            assert.strictEqual(data[0].response[1].name,'BBB');
             done();
         });
     });
@@ -423,10 +477,10 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,2);
-            assert.equal(data[0].response[0].name,'budi');
-            assert.equal(data[0].response[1].name,'wawan');
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,2);
+            assert.strictEqual(data[0].response[0].name,'budi');
+            assert.strictEqual(data[0].response[1].name,'wawan');
             done();
         });
     });
@@ -458,9 +512,9 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,1);
-            assert.equal(data[0].response[0].name,'wawan');
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,1);
+            assert.strictEqual(data[0].response[0].name,'wawan');
             done();
         });
     });
@@ -481,10 +535,10 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,2);
-            assert.equal(data[0].response[0].name,'tono');
-            assert.equal(data[0].response[1].name,'wawan');
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,2);
+            assert.strictEqual(data[0].response[0].name,'tono');
+            assert.strictEqual(data[0].response[1].name,'wawan');
             done();
         });
     });
@@ -504,10 +558,10 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,2);
-            assert.equal(data[0].response[0].name,'budi');
-            assert.equal(data[0].response[1].name,'tono');
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,2);
+            assert.strictEqual(data[0].response[0].name,'budi');
+            assert.strictEqual(data[0].response[1].name,'tono');
             done();
         });
     });
@@ -526,12 +580,12 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,4);
-            assert.equal(data[0].response[0].brand,'Audi');
-            assert.equal(data[0].response[1].brand,'Ferarri');
-            assert.equal(data[0].response[2].brand,'Ford');
-            assert.equal(data[0].response[3].brand,'Peugot');
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,4);
+            assert.strictEqual(data[0].response[0].brand,'Audi');
+            assert.strictEqual(data[0].response[1].brand,'Ferarri');
+            assert.strictEqual(data[0].response[2].brand,'Ford');
+            assert.strictEqual(data[0].response[3].brand,'Peugot');
             done();
         });
     });
@@ -550,16 +604,16 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,4);
-            assert.equal(data[0].response[0].brand,'Audi');
-            assert.equal(data[0].response[0].average_stock,54);
-            assert.equal(data[0].response[1].brand,'Ferarri');
-            assert.equal(data[0].response[1].average_stock,8);
-            assert.equal(data[0].response[2].brand,'Ford');
-            assert.equal(data[0].response[2].average_stock,49);
-            assert.equal(data[0].response[3].brand,'Peugot');
-            assert.equal(data[0].response[3].average_stock,23);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,4);
+            assert.strictEqual(data[0].response[0].brand,'Audi');
+            assert.strictEqual(data[0].response[0].average_stock,54);
+            assert.strictEqual(data[0].response[1].brand,'Ferarri');
+            assert.strictEqual(data[0].response[1].average_stock,8);
+            assert.strictEqual(data[0].response[2].brand,'Ford');
+            assert.strictEqual(data[0].response[2].average_stock,49);
+            assert.strictEqual(data[0].response[3].brand,'Peugot');
+            assert.strictEqual(data[0].response[3].average_stock,23);
             done();
         });
     });
@@ -577,12 +631,12 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,1);
-            assert.equal(data[0].response[0].brand.Audi.length,2);
-            assert.equal(data[0].response[0].brand.Ferarri.length,1);
-            assert.equal(data[0].response[0].brand.Ford.length,1);
-            assert.equal(data[0].response[0].brand.Peugot.length,1);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,1);
+            assert.strictEqual(data[0].response[0].brand.Audi.length,2);
+            assert.strictEqual(data[0].response[0].brand.Ferarri.length,1);
+            assert.strictEqual(data[0].response[0].brand.Ford.length,1);
+            assert.strictEqual(data[0].response[0].brand.Peugot.length,1);
             done();
         });
     });
@@ -606,14 +660,14 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,3);
-            assert.equal(data[0].response[0].user_id,1);
-            assert.equal(data[0].response[0].id,1);
-            assert.equal(data[0].response[1].user_id,5);
-            assert.equal(data[0].response[1].id,5);
-            assert.equal(data[0].response[2].user_id,3);
-            assert.equal(data[0].response[2].id,3);
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,3);
+            assert.strictEqual(data[0].response[0].user_id,1);
+            assert.strictEqual(data[0].response[0].id,1);
+            assert.strictEqual(data[0].response[1].user_id,5);
+            assert.strictEqual(data[0].response[1].id,5);
+            assert.strictEqual(data[0].response[2].user_id,3);
+            assert.strictEqual(data[0].response[2].id,3);
             done();
         });
     });
@@ -651,26 +705,26 @@ describe('query test', function() {
         ];
 
         jsonql.query(q).exec(function(err, data) {
-            assert.equal(data[0].status,true);
-            assert.equal(data[0].response.length,3);
-            assert.equal(data[0].response[0].user_id,1);
-            assert.equal(data[0].response[0].id,1);
-            assert.equal(data[0].response[0].name,'budi');
-            assert.equal(data[0].response[0].address,'bandung');
-            assert.equal(data[0].response[0].bio,'I was born in bandung');
-            assert.equal(data[0].response[0].about,'I come from bandung');
-            assert.equal(data[0].response[1].user_id,5);
-            assert.equal(data[0].response[1].id,5);
-            assert.equal(data[0].response[1].name,'wawan');
-            assert.equal(data[0].response[1].address,'surabaya');
-            assert.equal(data[0].response[1].bio,'I was born in surabaya');
-            assert.equal(data[0].response[1].about,'I come from surabaya');
-            assert.equal(data[0].response[2].user_id,3);
-            assert.equal(data[0].response[2].id,3);
-            assert.equal(data[0].response[2].name,'tono');
-            assert.equal(data[0].response[2].address,'solo');
-            assert.equal(data[0].response[2].bio,'I was born in solo');
-            assert.equal(data[0].response[2].about,'I come from solo');
+            assert.strictEqual(data[0].status,true);
+            assert.strictEqual(data[0].response.length,3);
+            assert.strictEqual(data[0].response[0].user_id,1);
+            assert.strictEqual(data[0].response[0].id,1);
+            assert.strictEqual(data[0].response[0].name,'budi');
+            assert.strictEqual(data[0].response[0].address,'bandung');
+            assert.strictEqual(data[0].response[0].bio,'I was born in bandung');
+            assert.strictEqual(data[0].response[0].about,'I come from bandung');
+            assert.strictEqual(data[0].response[1].user_id,5);
+            assert.strictEqual(data[0].response[1].id,5);
+            assert.strictEqual(data[0].response[1].name,'wawan');
+            assert.strictEqual(data[0].response[1].address,'surabaya');
+            assert.strictEqual(data[0].response[1].bio,'I was born in surabaya');
+            assert.strictEqual(data[0].response[1].about,'I come from surabaya');
+            assert.strictEqual(data[0].response[2].user_id,3);
+            assert.strictEqual(data[0].response[2].id,3);
+            assert.strictEqual(data[0].response[2].name,'tono');
+            assert.strictEqual(data[0].response[2].address,'solo');
+            assert.strictEqual(data[0].response[2].bio,'I was born in solo');
+            assert.strictEqual(data[0].response[2].about,'I come from solo');
             done();
         });
     });

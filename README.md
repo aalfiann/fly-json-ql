@@ -16,6 +16,22 @@ JsonQL will make your query more cleaner. Because sometimes query using function
 ```bash
 $ npm install fly-json-ql
 ```
+**Or simply use in Browser with CDN**
+```html
+<!-- Always get the latest version -->
+<!-- Not recommended for production sites! -->
+<script src="https://cdn.jsdelivr.net/npm/fly-json-ql/dist/flyjsonql.min.js"></script>
+
+<!-- Get minor updates and patch fixes within a major version -->
+<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1/dist/flyjsonql.min.js"></script>
+
+<!-- Get patch fixes within a minor version -->
+<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1.1/dist/flyjsonql.min.js"></script>
+
+<!-- Get a specific version -->
+<!-- Recommended for production sites! -->
+<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1.1.0/dist/flyjsonql.min.js"></script>
+```
 
 ### Usage
 ```javascript

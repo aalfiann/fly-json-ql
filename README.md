@@ -1,5 +1,6 @@
 # fly-json-ql
-[![NPM](https://nodei.co/npm/fly-json-ql.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/fly-json-ql/)  
+[![NPM](https://nodei.co/npm/fly-json-ql.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/fly-json-ql/)
+[![js-semistandard-style](https://raw.githubusercontent.com/standard/semistandard/master/badge.svg)](https://github.com/standard/semistandard)  
   
 [![npm version](https://img.shields.io/npm/v/fly-json-ql.svg?style=flat-square)](https://www.npmjs.org/package/fly-json-ql)
 [![Build Status](https://travis-ci.com/aalfiann/fly-json-ql.svg?branch=master)](https://travis-ci.com/aalfiann/fly-json-ql)
@@ -26,11 +27,11 @@ $ npm install fly-json-ql
 <script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1/dist/flyjsonql.min.js"></script>
 
 <!-- Get patch fixes within a minor version -->
-<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1.1/dist/flyjsonql.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1.2/dist/flyjsonql.min.js"></script>
 
 <!-- Get a specific version -->
 <!-- Recommended for production sites! -->
-<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1.1.0/dist/flyjsonql.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1.2.0/dist/flyjsonql.min.js"></script>
 ```
 
 ### Usage

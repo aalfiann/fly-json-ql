@@ -8,7 +8,8 @@
 [![Known Vulnerabilities](https://snyk.io//test/github/aalfiann/fly-json-ql/badge.svg?targetFile=package.json)](https://snyk.io//test/github/aalfiann/fly-json-ql?targetFile=package.json)
 ![License](https://img.shields.io/npm/l/fly-json-ql)
 ![NPM download/month](https://img.shields.io/npm/dm/fly-json-ql.svg)
-![NPM download total](https://img.shields.io/npm/dt/fly-json-ql.svg)  
+![NPM download total](https://img.shields.io/npm/dt/fly-json-ql.svg)
+[![](https://data.jsdelivr.com/v1/package/npm/fly-json-ql/badge)](https://www.jsdelivr.com/package/npm/fly-json-ql)  
 Query Json on the fly with JsonQL for NodeJS and Browser.  
 
 JsonQL will make your query more cleaner. Because sometimes query using function is harder to read.

@@ -1,5 +1,5 @@
 /*!
- * FlyJsonQL ES6 v1.2.0 [NodeJS & Browser]
+ * FlyJsonQL ES6 v1.2.1 [NodeJS & Browser]
  * https://github.com/aalfiann/fly-json-ql
  *
  * Copyright 2021 M ABD AZIZ ALFIAN

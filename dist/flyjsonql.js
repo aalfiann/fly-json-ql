@@ -92,7 +92,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return r;
   }()({
     1: [function (require, module, exports) {
-      /*! FlyJson v1.13.0 | (c) 2021 M ABD AZIZ ALFIAN | MIT License | https://github.com/aalfiann/fly-json-odm */
+      /*! FlyJson v1.14.0 | (c) 2021 M ABD AZIZ ALFIAN | MIT License | https://github.com/aalfiann/fly-json-odm */
       'use strict';
 
       var Helper = require('./helper');
@@ -607,7 +607,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
                       return result.length > 0;
 
-                    case 'notin':
+                    case 'not in':
                       if (_self.isString(v)) {
                         return v.indexOf(s) === -1;
                       }
@@ -1535,7 +1535,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }, {}],
     4: [function (require, module, exports) {
       /*!
-       * FlyJsonQL ES6 v1.2.0 [NodeJS & Browser]
+       * FlyJsonQL ES6 v1.2.1 [NodeJS & Browser]
        * https://github.com/aalfiann/fly-json-ql
        *
        * Copyright 2021 M ABD AZIZ ALFIAN

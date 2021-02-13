@@ -32,7 +32,7 @@ $ npm install fly-json-ql
 
 <!-- Get a specific version -->
 <!-- Recommended for production sites! -->
-<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1.2.0/dist/flyjsonql.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fly-json-ql@1.2.1/dist/flyjsonql.min.js"></script>
 ```
 
 ### Usage
